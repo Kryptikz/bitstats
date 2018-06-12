@@ -35,7 +35,7 @@ public class StatisticsGraph extends JComponent{
         for(GraphPoint p : points) {
             av+=p.getY();
         }
-        av/=points.size();
+        av/=(double)points.size();
         g.setColor(Color.BLACK);
         g.drawString("MEAN: " + av,30,20);
         double avy = (HEIGHT*((av-min_y)/(max_y-min_y)));
@@ -48,11 +48,12 @@ public class StatisticsGraph extends JComponent{
         }
         Collections.sort(medianlist);
         g.drawString("MEDIAN: " + (medianlist.get((int)(medianlist.size()/2))).getY(),30,40);
-        int stdev=0;
+        double stdev=0;
         for(GraphPoint p : points) {
-            stdev+=Math.abs(p.getY()-av);
+            stdev+=(p.getY()-av)*(p.getY()-av);
         }
-        stdev/=points.size();
+        stdev/=(double)points.size();
+        stdev=Math.sqrt(stdev);
         g.drawString("STANDARD DEVIATION: " + stdev,30,60);      
         //double maxy = (HEIGHT*((max_y-min_y)/(max_y-min_y)));
         g.setColor(Color.BLUE);
@@ -63,16 +64,33 @@ public class StatisticsGraph extends JComponent{
         g.setColor(Color.MAGENTA);
         double medy = (HEIGHT*((((medianlist.get((int)(medianlist.size()/2))).getY())-min_y)/(max_y-min_y)));
         g.drawLine(0,(int)medy,WIDTH,(int)medy);
+        
+        double[] xlist = new double[points.size()];
+        double[] ylist = new double[points.size()];
+        for(int i=0;i<points.size();i++) {
+            GraphPoint p = points.get(i);
+            xlist[i]=p.getX();
+            ylist[i]=p.getY();
+        }
+        LinearEquation ln = Calculate.LinearRegression(xlist,ylist);
+        double ln_y1 = ln.calc(0);
+        double ln_y2 = ln.calc((max_x/1.1));
+        g.setColor(Color.PINK);
+        double ln_y1_scale = (HEIGHT*((ln_y1-(min_y/.9))/((max_y/1.1)-(min_y/.9))));
+        double ln_y2_scale = (HEIGHT*((ln_y2-(min_y/.9))/((max_y/1.1)-(min_y/.9))));
+        System.out.println("ln_y1 : " + ln_y1_scale)  ;
+        System.out.println("ln_y2 : " + ln_y2_scale);
+        g.drawLine(0,HEIGHT-(int)ln_y1_scale,WIDTH,HEIGHT-(int)ln_y2_scale);        
         if (points.size()>0) {
             double psx = WIDTH*((points.get(0).getX())/max_x);
-            double psy = (HEIGHT*(points.get(0).getY()/max_y))-(HEIGHT*(min_y/max_y));
+            double psy = (HEIGHT*((points.get(0).getY()-(min_y/.9))/((max_y/1.1)-(min_y/.9))));
             psy+=30;
             for(GraphPoint p : points) {
                 double sx = WIDTH*(p.getX()/max_x);
                 //double sy = HEIGHT*((((p.getY()/max_y)))-min_y);
                 //double sy = (HEIGHT*(p.getY()/max_y))-(HEIGHT*(min_y/max_y));
                 //double sy = (HEIGHT*(p.getY()/max_y));
-                double sy = (HEIGHT*((p.getY()-min_y)/(max_y-min_y)));
+                double sy = (HEIGHT*((p.getY()-(min_y/.9))/((max_y/1.1)-(min_y/.9))));
                 sy+=30;
                 //System.out.println("cy: " + p.getY());
                 //System.out.println("sx: " + sx);
@@ -111,7 +129,7 @@ public class StatisticsGraph extends JComponent{
         GraphPoint gp = new GraphPoint(_x_,_y_);
         points.add(gp);
         if (points.size()==1) {
-            min_y=(.8*gp.getY());
+            min_y=(.9*gp.getY());
         }
         if (gp.getX()>(max_x/1.1)) {
             max_x=(1.1*(gp.getX()));
@@ -119,8 +137,8 @@ public class StatisticsGraph extends JComponent{
         if (gp.getY()>(max_y/1.1)) {
             max_y=((1.1*gp.getY()));
         }
-        if (gp.getY()<(min_y/.8)) {   
-            min_y=(.8*gp.getY());
+        if (gp.getY()<(min_y)/.9) {   
+            min_y=(.9*gp.getY());
         }
     }
 }
