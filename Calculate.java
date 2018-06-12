@@ -64,11 +64,11 @@ public class Calculate {
             sum5+=d*d;
         } //sum y^2
         
-        double r = (c1-c2)/Math.sqrt((c3-(sum4*sum4))*((n*sum5)-sum3*sum3));        
-        double r2 = r*r;
+        //double r = (c1-c2)/Math.sqrt((c3-(sum4*sum4))*((n*sum5)-sum3*sum3));        
+        //double r2 = r*r;
         
-        System.out.println("r: " + r);
-        System.out.println("r2: " + r2);
+        //System.out.println("r: " + r);
+        //System.out.println("r2: " + r2);
         
         
         

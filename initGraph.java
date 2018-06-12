@@ -30,7 +30,7 @@ public class initGraph {
                 e.printStackTrace();
             }
         }*/
-        for(int i=0;i<100;i++) {
+        /*for(int i=0;i<100;i++) {
             sg.addPoint(i,i);
             sg.redraw();
             try {
@@ -41,6 +41,15 @@ public class initGraph {
         }
         for(int i=100;i<201;i++) {
             sg.addPoint(i, Math.abs(201-i));
+            sg.redraw();
+            try {
+                Thread.sleep(100);
+            } catch (Exception e) { 
+                e.printStackTrace();
+            }
+        }*/
+        for(int i=0;i<1000;i++) {
+            sg.addPoint(i,i*i);
             sg.redraw();
             try {
                 Thread.sleep(100);
