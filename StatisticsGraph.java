@@ -8,7 +8,7 @@ public class StatisticsGraph extends JComponent{
     double min_x;
     double min_y;
     int WIDTH=1900;
-    int HEIGHT=1000;
+    int HEIGHT=1050;
     public StatisticsGraph() {
         super();
         points = new ArrayList<GraphPoint>();
@@ -31,6 +31,38 @@ public class StatisticsGraph extends JComponent{
         //System.out.println("max x : " + max_x);
         g.setColor(Color.GRAY);
         g.fillRect(0, 0, WIDTH, HEIGHT);
+        double av=0;
+        for(GraphPoint p : points) {
+            av+=p.getY();
+        }
+        av/=points.size();
+        g.setColor(Color.BLACK);
+        g.drawString("MEAN: " + av,30,20);
+        double avy = (HEIGHT*((av-min_y)/(max_y-min_y)));
+        g.setColor(Color.ORANGE);
+        g.drawLine(0, (int)avy, WIDTH, (int)avy);
+        g.setColor(Color.BLACK);
+        ArrayList<GraphPoint> medianlist = new ArrayList<GraphPoint>();
+        for(GraphPoint p : points) {
+            medianlist.add(p);
+        }
+        Collections.sort(medianlist);
+        g.drawString("MEDIAN: " + (medianlist.get((int)(medianlist.size()/2))).getY(),30,40);
+        int stdev=0;
+        for(GraphPoint p : points) {
+            stdev+=Math.abs(p.getY()-av);
+        }
+        stdev/=points.size();
+        g.drawString("STANDARD DEVIATION: " + stdev,30,60);      
+        //double maxy = (HEIGHT*((max_y-min_y)/(max_y-min_y)));
+        g.setColor(Color.BLUE);
+        g.drawLine(0,(int)(HEIGHT-(HEIGHT/1.1))-30,WIDTH,(int)(HEIGHT-(HEIGHT/1.1))-30);
+        g.drawLine(0,(int)(HEIGHT-((HEIGHT)/1.1/2))-30,WIDTH,(int)(HEIGHT-((HEIGHT)/1.1/2))-30);
+        g.drawLine(0,(int)(HEIGHT-((HEIGHT)/.9)-30),WIDTH,(int)(HEIGHT-((HEIGHT)/.9)-30));
+        
+        g.setColor(Color.MAGENTA);
+        double medy = (HEIGHT*((((medianlist.get((int)(medianlist.size()/2))).getY())-min_y)/(max_y-min_y)));
+        g.drawLine(0,(int)medy,WIDTH,(int)medy);
         if (points.size()>0) {
             double psx = WIDTH*((points.get(0).getX())/max_x);
             double psy = (HEIGHT*(points.get(0).getY()/max_y))-(HEIGHT*(min_y/max_y));
@@ -79,16 +111,16 @@ public class StatisticsGraph extends JComponent{
         GraphPoint gp = new GraphPoint(_x_,_y_);
         points.add(gp);
         if (points.size()==1) {
-            min_y=(gp.getY());
+            min_y=(.8*gp.getY());
         }
         if (gp.getX()>(max_x/1.1)) {
             max_x=(1.1*(gp.getX()));
         }
-        if (gp.getY()>(max_y)) {
-            max_y=((gp.getY()));
+        if (gp.getY()>(max_y/1.1)) {
+            max_y=((1.1*gp.getY()));
         }
-        if (gp.getY()<(min_y)) {   
-            min_y=(gp.getY());
+        if (gp.getY()<(min_y/.8)) {   
+            min_y=(.8*gp.getY());
         }
     }
 }

@@ -1,4 +1,4 @@
-public class GraphPoint {
+public class GraphPoint implements Comparable {
     private double x;
     private double y;
     public GraphPoint(double _x_, double _y_) {
@@ -16,5 +16,15 @@ public class GraphPoint {
     }
     public double getY() {
         return y;
+    }
+    public int compareTo(Object other) {
+        GraphPoint o = (GraphPoint)other;
+        if(this.getY()>o.getY()) {
+            return 1;
+        } else if (o.getY()>this.getY()) {
+            return -1;
+        } else {
+            return 0;
+        }
     }
 }

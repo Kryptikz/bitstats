@@ -3,7 +3,7 @@ import javax.swing.*;
 public class initGraph {
     public static void main(String[] args) {
         JFrame frame = new JFrame("graph");
-        frame.setSize(1900,1000);
+        frame.setSize(1900,1050);
         frame.setResizable(false);
         frame.setVisible(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
