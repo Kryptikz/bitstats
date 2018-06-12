@@ -1,0 +1,20 @@
+public class GraphPoint {
+    private double x;
+    private double y;
+    public GraphPoint(double _x_, double _y_) {
+        x=_x_;
+        y=_y_;
+    }
+    public void setX(double _x_) {
+        x=_x_;
+    }
+    public void setY(double _y_) {
+        y=_y_;
+    }
+    public double getX() {
+        return x;
+    }
+    public double getY() {
+        return y;
+    }
+}
