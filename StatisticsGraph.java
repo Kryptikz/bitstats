@@ -74,13 +74,15 @@ public class StatisticsGraph extends JComponent{
         }
         LinearEquation ln = Calculate.LinearRegression(xlist,ylist);
         double ln_y1 = ln.calc(0);
-        double ln_y2 = ln.calc((max_x/1.1));
+        double ln_y2 = ln.calc((max_x));
         g.setColor(Color.PINK);
         double ln_y1_scale = (HEIGHT*((ln_y1-(min_y/.9))/((max_y/1.1)-(min_y/.9))));
         double ln_y2_scale = (HEIGHT*((ln_y2-(min_y/.9))/((max_y/1.1)-(min_y/.9))));
+        ln_y1_scale+=30;
+        ln_y2_scale+=30;
         System.out.println("ln_y1 : " + ln_y1_scale)  ;
         System.out.println("ln_y2 : " + ln_y2_scale);
-        g.drawLine(0,HEIGHT-(int)ln_y1_scale,WIDTH,HEIGHT-(int)ln_y2_scale);        
+        g.drawLine(0,HEIGHT-(int)ln_y1_scale,(int)(WIDTH),HEIGHT-(int)ln_y2_scale);        
         if (points.size()>0) {
             double psx = WIDTH*((points.get(0).getX())/max_x);
             double psy = (HEIGHT*((points.get(0).getY()-(min_y/.9))/((max_y/1.1)-(min_y/.9))));
