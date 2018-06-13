@@ -6,9 +6,11 @@ public class MouseThread implements Runnable {
     ArrayList<GraphPoint> points;
     StatisticsGraph sg;
     boolean pause;
-    public MouseThread(StatisticsGraph s) {
+    JFrame frame;
+    public MouseThread(StatisticsGraph s, JFrame f) {
         sg=s;
         points = new ArrayList<GraphPoint>();
+        frame=f;
     }
     public void run() {
         while(true) {
@@ -30,9 +32,13 @@ public class MouseThread implements Runnable {
                             double sy = HEIGHT-(HEIGHT*((p.getY()-(min_y/.9))/((max_y/1.1)-(min_y/.9))));
                             //sy+=30;
                             
+                            Point loc = frame.getLocationOnScreen();
+                            double fx = loc.getX();
+                            double fy = loc.getY();
+                            
                             Point mp = MouseInfo.getPointerInfo().getLocation();
-                            double mx = mp.getX();
-                            double my = mp.getY();
+                            double mx = mp.getX()-fx;
+                            double my = mp.getY()-fy;
                             mouse = new GraphPoint(mx,my);
                             double dist = Math.sqrt(((mx-sx)*(mx-sx))+((my-sy)*(my-sy)));
                             

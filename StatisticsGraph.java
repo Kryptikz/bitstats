@@ -14,7 +14,8 @@ public class StatisticsGraph extends JComponent{
     double value;
     GraphPoint closest;
     GraphPoint mouse;
-    public StatisticsGraph() {
+    JFrame frame;
+    public StatisticsGraph(JFrame f) {
         super();
         points = new ArrayList<GraphPoint>();
         max_x=5;
@@ -22,8 +23,9 @@ public class StatisticsGraph extends JComponent{
         min_x=0;
         min_y=0;
         value=0;
-        mt = new MouseThread(this);
+        mt = new MouseThread(this,f);
         (new Thread(mt)).start();
+        frame=f;
     }
     public void redraw() {
         repaint();
