@@ -18,8 +18,8 @@ public class StatisticsGraph extends JComponent{
     public StatisticsGraph(JFrame f) {
         super();
         points = new ArrayList<GraphPoint>();
-        max_x=5;
-        max_y=5;
+        max_x=0;
+        max_y=0;
         min_x=0;
         min_y=0;
         value=0;
@@ -33,6 +33,10 @@ public class StatisticsGraph extends JComponent{
     public void paintComponent(Graphics g) {
         try {
             super.paintComponent(g);
+            Graphics2D g2d = (Graphics2D)g;
+            g2d.setRenderingHint(
+                        RenderingHints.KEY_ANTIALIASING,
+                        RenderingHints.VALUE_ANTIALIAS_ON);
             g.setColor(Color.RED);
             //System.out.println("points size: " + points.size());
             //System.out.println("max x: " + max_x);
@@ -97,16 +101,17 @@ public class StatisticsGraph extends JComponent{
             LinearEquation ln = Calculate.LinearRegression(xlist,ylist);
             double ln_y1 = ln.calc(0);
             double ln_y2 = ln.calc((max_x));
-            g.setColor(Color.PINK);
+            g2d.setColor(Color.PINK);
             double ln_y1_scale = (HEIGHT*((ln_y1-(min_y/.9))/((max_y/1.1)-(min_y/.9))));
             double ln_y2_scale = (HEIGHT*((ln_y2-(min_y/.9))/((max_y/1.1)-(min_y/.9))));
             ln_y1_scale+=30;
             ln_y2_scale+=30;
             //System.out.println("ln_y1 : " + ln_y1_scale)  ;
             //System.out.println("ln_y2 : " + ln_y2_scale);
-            g.drawLine(0,HEIGHT-(int)ln_y1_scale,(int)(WIDTH),HEIGHT-(int)ln_y2_scale);  
+            g2d.drawLine(0,HEIGHT-(int)ln_y1_scale,(int)(WIDTH),HEIGHT-(int)ln_y2_scale);  
             
-            g.setColor(new Color(255,255,255,185));
+            g2d.setColor(new Color(255,255,255,185));
+            
             double mx = mouse.getX();
             double my = mouse.getY();
             double cx = closest.getX();
@@ -114,7 +119,13 @@ public class StatisticsGraph extends JComponent{
             //cy = 
             my-=27;
             cy-=30;
-            g.drawLine((int)mx, (int)my, (int)cx, (int)cy);
+            //g.drawLine((int)mx, (int)my, (int)cx, (int)cy);
+            double dist = Math.sqrt(((mx-cx)*(mx-cx))+((my-cy)*(my-cy)));
+            if (dist<100) {
+                g2d.drawLine((int)mx, (int)my, (int)cx, (int)cy);    
+            }
+            g.fillOval((int)(cx-4), (int)(cy-4), 8, 8);
+            
             
             if (points.size()>0) {
                 double psx = WIDTH*((points.get(0).getX())/max_x);
@@ -137,13 +148,14 @@ public class StatisticsGraph extends JComponent{
                     g.fillRect((int)((sx)-2), (int)((HEIGHT-sy)-2), 4, 4);
                     //g.setColor(Color.BLACK);
                     if (sy>psy) {
-                        g.setColor(Color.GREEN);
+                        g2d.setColor(Color.GREEN);
                     } else if (psy>sy) {
-                        g.setColor(Color.RED);
+                        g2d.setColor(Color.RED);
                     } else {
-                        g.setColor(Color.BLACK);
+                        g2d.setColor(Color.BLACK);
                     }
-                    g.drawLine((int)sx, (int)(HEIGHT-sy), (int)psx, (int)(HEIGHT-psy));
+                    
+                    g2d.drawLine((int)sx, (int)(HEIGHT-sy), (int)psx, (int)(HEIGHT-psy));
                     psx=sx;
                     psy=sy;
                 }

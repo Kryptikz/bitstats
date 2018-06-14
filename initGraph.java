@@ -10,7 +10,7 @@ public class initGraph {
         StatisticsGraph sg = new StatisticsGraph(frame);
         frame.add(sg);
         sg.setVisible(true);
-        for(int i=0;i<1400;i++) {
+        /*for(int i=0;i<1400;i++) {
             double y = webData.getCurrent();
             sg.addPoint(i,y);
             sg.redraw();
@@ -19,7 +19,7 @@ public class initGraph {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        }
+        }*/
         /*for(int i=0;i<10000;i++) {
             double y = (Math.random()*100000);
             sg.addPoint(i,y);
@@ -69,16 +69,16 @@ public class initGraph {
                 e.printStackTrace();
             }
         }*/
-        /*for(double i=0;i<100;i+=.1) {
-            double y = Math.tan(i)+10;
+        for(double i=0;i<10;i+=.01) {
+            double y = 2*Math.sin(i)+10;
             sg.addPoint(i,y);
             sg.redraw();
             try {
-                Thread.sleep(100);
+                Thread.sleep(30);
             } catch (Exception e) { 
                 e.printStackTrace();
             }
-        }*/
+        }
         /*for(int i=-1000;i<1000;i++) {
             double y = (2*(i*i*i))+(4.3*(i*i))-(1.2*i)+93;
             sg.addPoint(i,y);
